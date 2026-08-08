@@ -1,0 +1,19 @@
+/ it will be basic transformer of expressions with lot of features /
+
+der(a) = lim(h, 0, (f(a + h) - f(a)) / h)
+square(x) = x^2
+(a + b)^2 = a^2 + 2ab +b^2
+(a + 0) = a
+(a - 0) = a
+(a - a) = 0
+
+der(square) =>
+lim(h, 0, (square(a + h) - square(a)) / h) =>
+lim(h, 0, ((a + h)^2 - (a)^2) / h) =>
+lim(h, 0, (((a^2 +2ah) + h^2 - a^2) / h) =>
+...
+=>
+2*x
+
+
+
