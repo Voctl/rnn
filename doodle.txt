@@ -7,10 +7,13 @@ square(x) = x^2
 (a - 0) = a
 (a - a) = 0
 
+lim(var, value, expr) = #replace(var, value, expr)
+
 der(square) =>
 lim(h, 0, (square(a + h) - square(a)) / h) =>
 lim(h, 0, ((a + h)^2 - (a)^2) / h) =>
 lim(h, 0, (((a^2 +2ah) + h^2 - a^2) / h) =>
 ...
 =>
-2*x
+
+okay a rule is can be just equalities i think
