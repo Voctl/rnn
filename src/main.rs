@@ -1,20 +1,70 @@
-mod eng;
-use eng::lexer::*;
-
+use std::fmt;
 
 // lim(var, val, exp)
-enum Expr{
+#[derive(Debug)]
+enum Expr {
     Symb(String),
-    Func(String , Vector<Expr>)
+    Func(String, Vec<Expr>),
 }
 
-// lefts side-> a = a <- right side
+// left side-> a = a <- right side
+#[derive(Debug)]
 struct Rules {
-    leftex : Expr,
-    rightex : Expr,
+    leftex: Expr,
+    rightex: Expr,
 }
 
+impl fmt::Display for Expr {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Expr::Symb(name) => write!(f, "{}", name),
+            Expr::Func(name, args) => {
+                write!(f, "{}(", name)?;
+
+                for (i, arg) in args.iter().enumerate() {
+                    if i > 0 {
+                        write!(f, ", ")?;
+                    }
+                    write!(f, "{}", arg)?;
+                }
+                write!(f, ")")
+            }
+        }
+    }
+}
+
+impl fmt::Display for Rules {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{} == {}", self.leftex, self.rightex)
+    }
+}
+
+// it's for writing functions and it's similar to "class" to write methods
+impl Rules {
+    fn applysmth(&self, _expr: Expr) -> Expr {
+        todo!();
+    }
+}
 
 fn main() {
-    println!("main");
+    // swap(pair(a, b)) == pair(b,a)
+    use Expr::*;
+    let swap = Rules {
+        leftex: Func(
+            "swap".to_string(),
+            vec![Func(
+                "pair".to_string(),
+                vec![Symb("a".to_string()), Symb("b".to_string())],
+            )],
+        ),
+        rightex: Func(
+            "swap".to_string(),
+            vec![Func(
+                "pair".to_string(),
+                vec![Symb("b".to_string()), Symb("a".to_string())],
+            )],
+        ),
+    };
+
+    println!("{}", swap);
 }
