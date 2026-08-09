@@ -15,5 +15,5 @@ lim(h, 0, ((a + h)^2 - (a)^2) / h) =>
 lim(h, 0, (((a^2 +2ah) + h^2 - a^2) / h) =>
 ...
 =>
-
+x^2
 okay a rule is can be just equalities i think

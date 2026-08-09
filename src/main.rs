@@ -55,18 +55,22 @@ type Bindings = HashMap<String, Expr>;
 
 fn patm_impl(pattr: Expr, value : Expr, bindings : &mut Bindings) -> bool {
     todo!()
+        match (pattr, value) {
+            (Sym(name), _) => todo!(),
+            (Func(name, args), Func(name, args)),
+        }
 }
 
 fn patm(pattr : Expr, value : Expr) -> Option<Bindings>{
-    let Bindings = HashMap::new();
-
-
-    match (pattr, value) {
-        (Symb(name), _) => todo!(),
-        (Func(name, args), Func(name, args)),
+    let mut bindings = HashMap::new();
+    if patm_impl(pattr, value, &mut bindings){
+        Some(bindings)
     }
-
+    else {
+        None
+    }
 }
+
 
 fn main() {
     // swap(pair(a, b)) == pair(b,a)
