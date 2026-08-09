@@ -53,6 +53,10 @@ impl Rules {
 
 type Bindings = HashMap<String, Expr>;
 
+fn patm_impl(pattr: Expr, value : Expr, bindings : &mut Bindings) -> bool {
+    todo!()
+}
+
 fn patm(pattr : Expr, value : Expr) -> Option<Bindings>{
     let Bindings = HashMap::new();
 
