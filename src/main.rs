@@ -1,7 +1,11 @@
 use std::fmt;
+use std::collections::HashMap;
+
+// rewrite rules:
+// lim(var, val, exp) = #rewrite(var, val, exp)
 
 // lim(var, val, exp)
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 enum Expr {
     Symb(String),
     Func(String, Vec<Expr>),
@@ -46,6 +50,20 @@ impl Rules {
     }
 }
 
+
+type Bindings = HashMap<String, Expr>;
+
+fn patm(pattr : Expr, value : Expr) -> Option<Bindings>{
+    let Bindings = HashMap::new();
+
+
+    match (pattr, value) {
+        (Symb(name), _) => todo!(),
+        (Func(name, args), Func(name, args)),
+    }
+
+}
+
 fn main() {
     // swap(pair(a, b)) == pair(b,a)
     use Expr::*;
@@ -58,13 +76,28 @@ fn main() {
             )],
         ),
         rightex: Func(
-            "swap".to_string(),
-            vec![Func(
-                "pair".to_string(),
-                vec![Symb("b".to_string()), Symb("a".to_string())],
-            )],
+            "pair".to_string(),
+            vec![Symb("b".to_string()), Symb("a".to_string())],
         ),
     };
 
-    println!("{}", swap);
+
+    // Pattern swap(pair(a, b))
+    let pattern = &swap.leftex;
+    //Value swap(pair(f(c), g(d)))
+    let value = Func(
+        "swap".to_string(),
+        vec![Func(
+            "pair".to_string(),
+            vec![
+                Func("f".to_string(), vec![Symb("c".to_string())]),
+                Func("g".to_string(), vec![Symb("d".to_string())]),
+            ],
+        )],
+    );
+
+
+    println!("Pattern : {}", pattern);
+    println!("Value : {}", value);
+    println!("Pattern Match : {:?}", patm(pattern, value));
 }
