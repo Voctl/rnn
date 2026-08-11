@@ -1,17 +1,12 @@
-use std::fmt;
 use std::collections::HashMap;
+use std::fmt;
 
-// rewrite rules:
-// lim(var, val, exp) = #rewrite(var, val, exp)
-
-// lim(var, val, exp)
 #[derive(Debug, Clone, PartialEq)]
 enum Expr {
     Symb(String),
     Func(String, Vec<Expr>),
 }
 
-// left side-> a = a <- right side
 #[derive(Debug)]
 struct Rules {
     leftex: Expr,
@@ -43,37 +38,48 @@ impl fmt::Display for Rules {
     }
 }
 
-// it's for writing functions and it's similar to "class" to write methods
 impl Rules {
     fn applysmth(&self, _expr: Expr) -> Expr {
         todo!();
     }
 }
 
-
 type Bindings = HashMap<String, Expr>;
 
-fn patm_impl(pattr: Expr, value : Expr, bindings : &mut Bindings) -> bool {
-    todo!()
-        match (pattr, value) {
-            (Sym(name), _) => todo!(),
-            (Func(name, args), Func(name, args)),
+fn patm_impl(pattr: &Expr, value: &Expr, bindings: &mut Bindings) -> bool {
+    match (pattr, value) {
+        // Pattern symbol acts as a variable: bind it or verify consistency
+        (Expr::Symb(name), _) => {
+            if let Some(existing_val) = bindings.get(name) {
+                existing_val == value
+            } else {
+                bindings.insert(name.clone(), value.clone());
+                true
+            }
         }
+        (Expr::Func(p_name, p_args), Expr::Func(v_name, v_args)) => {
+            if p_name != v_name || p_args.len() != v_args.len() {
+                return false;
+            }
+            p_args
+                .iter()
+                .zip(v_args.iter())
+                .all(|(p, v)| patm_impl(p, v, bindings))
+        }
+        _ => false,
+    }
 }
 
-fn patm(pattr : Expr, value : Expr) -> Option<Bindings>{
+fn patm(pattr: &Expr, value: &Expr) -> Option<Bindings> {
     let mut bindings = HashMap::new();
-    if patm_impl(pattr, value, &mut bindings){
+    if patm_impl(pattr, value, &mut bindings) {
         Some(bindings)
-    }
-    else {
+    } else {
         None
     }
 }
 
-
 fn main() {
-    // swap(pair(a, b)) == pair(b,a)
     use Expr::*;
     let swap = Rules {
         leftex: Func(
@@ -89,10 +95,9 @@ fn main() {
         ),
     };
 
-
     // Pattern swap(pair(a, b))
     let pattern = &swap.leftex;
-    //Value swap(pair(f(c), g(d)))
+    // Value swap(pair(f(c), g(d)))
     let value = Func(
         "swap".to_string(),
         vec![Func(
@@ -103,9 +108,7 @@ fn main() {
             ],
         )],
     );
-
-
     println!("Pattern : {}", pattern);
     println!("Value : {}", value);
-    println!("Pattern Match : {:?}", patm(pattern, value));
+    println!("Pattern Match : {:?}", patm(pattern, &value));
 }
