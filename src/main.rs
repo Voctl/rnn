@@ -1,3 +1,5 @@
+// Symbolic rewriting engine for now
+
 use std::collections::HashMap;
 use std::fmt;
 
