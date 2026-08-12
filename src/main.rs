@@ -73,7 +73,6 @@ fn subs_bindings(bindings : &Bindings, expr : &Expr) -> Expr {
 impl Rules {
     fn appliesall(&self, expr: &Expr) -> Expr {
         if let Some(bindings) = patm(&self.leftex, expr) {
-            println!("MATCH: {:?}", bindings);
             subs_bindings(&bindings, &self.rightex)
         } else {
             use Expr::*;
