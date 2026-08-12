@@ -92,21 +92,27 @@ fn main() {
             "swap".to_string(),
             vec![Func(
                 "pair".to_string(),
-                vec![Symb("x".to_string()), Symb("x".to_string())],
+                vec![Symb("a".to_string()), Symb("b".to_string())],
             )],
         ),
         rightex: Func(
             "pair".to_string(),
-            vec![Symb("a".to_string()), Symb("a".to_string())],
+            vec![Symb("b".to_string()), Symb("a".to_string())],
         ),
     };
 
     // Pattern swap(pair(a, b))
     // Value swap(pair(f(c), g(d)))
 
-    let expr = Func("pair".to_string(),
+    let expr = Func("foo".to_string(),
+                    vec![Func("pair".to_string(),
                     vec![Func("f".to_string(), vec![Symb("a".to_string())]),
-                        Func("g".to_string(), vec![Symb("b".to_string())])])
+                         Func("g".to_string(), vec![Symb("b".to_string())])]),
+
+                    Func("pair".to_string(),
+                    vec![Func("f".to_string(), vec![Symb("a".to_string())]),
+                         Func("g".to_string(), vec![Symb("b".to_string())])])]);
+
 
     println!("Rule => {}", swap);
     println!("Expression => {}", expr);
