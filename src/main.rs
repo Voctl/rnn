@@ -44,9 +44,50 @@ impl fmt::Display for Rules {
     }
 }
 
+fn subs_bindings(bindings : &Bindings, expr : &Expr) -> Expr {
+    use Expr::*;
+    match expr {
+        Symb(name) => {
+            if let Some(value) = bindings.get(name){
+                value.clone()
+            } else {
+                expr.clone()
+            }
+        },
+        Func(name, args) => {
+            let new_name = match bindings.get(name){
+                Some(Symb(new_name)) => new_name.clone(),
+                None => name.clone() ,
+                Some(_) => panic!("Expected symbol i think in the functor name"),
+            };
+            let mut new_args = Vec::new();
+            for arg in args {
+                new_args.push(subs_bindings(bindings, &arg));
+            }
+            Func(new_name, new_args)
+         }
+    }
+}
+
+
 impl Rules {
-    fn appliesall(&self, _expr: Expr) -> Expr {
-        todo!();
+    fn appliesall(&self, expr: &Expr) -> Expr {
+        if let Some(bindings) = patm(&self.leftex, expr) {
+            println!("MATCH: {:?}", bindings);
+            subs_bindings(&bindings, &self.rightex)
+        } else {
+            use Expr::*;
+            match expr {
+                Symb(_) => expr.clone(),
+                Func(name, args) => {
+                    let mut new_args = Vec::new();
+                    for arg in args {
+                        new_args.push(self.appliesall(arg));
+                    }
+                    Func(name.clone(), new_args)
+                }
+            }
+        }
     }
 }
 
@@ -105,16 +146,15 @@ fn main() {
     // Value swap(pair(f(c), g(d)))
 
     let expr = Func("foo".to_string(),
-                    vec![Func("pair".to_string(),
-                    vec![Func("f".to_string(), vec![Symb("a".to_string())]),
-                         Func("g".to_string(), vec![Symb("b".to_string())])]),
-
-                    Func("pair".to_string(),
-                    vec![Func("f".to_string(), vec![Symb("a".to_string())]),
-                         Func("g".to_string(), vec![Symb("b".to_string())])])]);
-
-
+                    vec![Func("swap".to_string(),
+                              vec![Func("pair".to_string(),
+                                        vec![Func("f".to_string(), vec![Symb("a".to_string())]),
+                                             Func("g".to_string(), vec![Symb("b".to_string())])])]),
+                         Func("swap".to_string(),
+                              vec![Func("pair".to_string(),
+                                        vec![Func("q".to_string(), vec![Symb("c".to_string())]),
+                                             Func("z".to_string(), vec![Symb("d".to_string())])])])]);
     println!("Rule => {}", swap);
-    println!("Expression => {}", expr);
-    println!("Expr' : {}", appliesall(expr))
+    println!("Expr => {}", &expr);
+    println!("Expr' => {}", swap.appliesall(&expr));
 }
