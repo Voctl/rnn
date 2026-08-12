@@ -3,12 +3,16 @@
 use std::collections::HashMap;
 use std::fmt;
 
+
+// AST
 #[derive(Debug, Clone, PartialEq)]
 enum Expr {
     Symb(String),
     Func(String, Vec<Expr>),
 }
 
+
+// pattern and value
 #[derive(Debug)]
 struct Rules {
     leftex: Expr,
@@ -50,7 +54,7 @@ type Bindings = HashMap<String, Expr>;
 
 fn patm_impl(pattr: &Expr, value: &Expr, bindings: &mut Bindings) -> bool {
     match (pattr, value) {
-        // Pattern symbol acts as a variable: bind it or verify consistency
+        // Pattern symbol acts as a variable bind it or verify consistency
         (Expr::Symb(name), _) => {
             if let Some(existing_val) = bindings.get(name) {
                 existing_val == value
@@ -110,6 +114,16 @@ fn main() {
             ],
         )],
     );
+
+    if let Some(bindings) = patm(&pattern, &value){
+        println!("MATCH");
+        for (key, value) in bindings.iter(){
+            println!("{} => {}", key, value);
+        }
+    } else {
+        println!("DONT MATCH");
+        }
+
     println!("Pattern : {}", pattern);
     println!("Value : {}", value);
     println!("Pattern Match : {:?}", patm(pattern, &value));
