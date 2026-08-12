@@ -45,7 +45,7 @@ impl fmt::Display for Rules {
 }
 
 impl Rules {
-    fn applysmth(&self, _expr: Expr) -> Expr {
+    fn appliesall(&self, _expr: Expr) -> Expr {
         todo!();
     }
 }
@@ -116,4 +116,5 @@ fn main() {
 
     println!("Rule => {}", swap);
     println!("Expression => {}", expr);
+    println!("Expr' : {}", appliesall(expr))
 }
