@@ -104,10 +104,10 @@ fn main() {
     // Pattern swap(pair(a, b))
     // Value swap(pair(f(c), g(d)))
 
-    let expr = Func(
-            "swap".to_string(),
-        vec![Func("pair".to_string()vec![Symb("x".to_string()),
-                                         Symb("x".to_string())])])
+    let expr = Func("pair".to_string(),
+                    vec![Func("f".to_string(), vec![Symb("a".to_string())]),
+                        Func("g".to_string(), vec![Symb("b".to_string())])])
 
-    println!("{}", swap);
+    println!("Rule => {}", swap);
+    println!("Expression => {}", expr);
 }
