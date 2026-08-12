@@ -1,4 +1,4 @@
-// Symbolic rewriting engine for now
+// Symbolic rewriting engine for now (it will be math language)
 
 use std::collections::HashMap;
 use std::fmt;
@@ -92,39 +92,22 @@ fn main() {
             "swap".to_string(),
             vec![Func(
                 "pair".to_string(),
-                vec![Symb("a".to_string()), Symb("b".to_string())],
+                vec![Symb("x".to_string()), Symb("x".to_string())],
             )],
         ),
         rightex: Func(
             "pair".to_string(),
-            vec![Symb("b".to_string()), Symb("a".to_string())],
+            vec![Symb("a".to_string()), Symb("a".to_string())],
         ),
     };
 
     // Pattern swap(pair(a, b))
-    let pattern = &swap.leftex;
     // Value swap(pair(f(c), g(d)))
-    let value = Func(
-        "swap".to_string(),
-        vec![Func(
-            "pair".to_string(),
-            vec![
-                Func("f".to_string(), vec![Symb("c".to_string())]),
-                Func("g".to_string(), vec![Symb("d".to_string())]),
-            ],
-        )],
-    );
 
-    if let Some(bindings) = patm(&pattern, &value){
-        println!("MATCH");
-        for (key, value) in bindings.iter(){
-            println!("{} => {}", key, value);
-        }
-    } else {
-        println!("NO MATCH");
-        }
+    let expr = Func(
+            "swap".to_string(),
+        vec![Func("pair".to_string()vec![Symb("x".to_string()),
+                                         Symb("x".to_string())])])
 
-    println!("Pattern : {}", pattern);
-    println!("Value : {}", value);
-    println!("Pattern Match : {:?}", patm(pattern, &value));
+    println!("{}", swap);
 }
