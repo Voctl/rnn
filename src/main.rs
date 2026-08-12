@@ -102,7 +102,7 @@ fn main() {
     };
 
     // Pattern swap(pair(a, b))
-    let pattern = &swap.leftex;
+    let pattern = &swap.rightex;
     // Value swap(pair(f(c), g(d)))
     let value = Func(
         "swap".to_string(),
