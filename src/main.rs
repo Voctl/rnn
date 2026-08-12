@@ -102,7 +102,7 @@ fn main() {
     };
 
     // Pattern swap(pair(a, b))
-    let pattern = &swap.rightex;
+    let pattern = &swap.leftex;
     // Value swap(pair(f(c), g(d)))
     let value = Func(
         "swap".to_string(),
@@ -121,7 +121,7 @@ fn main() {
             println!("{} => {}", key, value);
         }
     } else {
-        println!("DONT MATCH");
+        println!("NO MATCH");
         }
 
     println!("Pattern : {}", pattern);
