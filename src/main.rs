@@ -144,6 +144,9 @@ struct Lexer {
 
 impl Iterator for Lexer {
     type Item = Token;
+    fn next(&mut self) -> Option<Token>{
+        todo!()
+    }
 }
 
 
