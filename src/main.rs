@@ -125,6 +125,28 @@ fn patm(pattr: &Expr, value: &Expr) -> Option<Bindings> {
     }
 }
 
+
+enum TokenCute {
+    Sym,
+    OpenParen,
+    CloseParen,
+    Comma,
+    Equals,
+}
+
+struct Token {
+    kind: TokenCute,
+    text : String,
+}
+
+struct Lexer {
+}
+
+impl Iterator for Lexer {
+    type Item = Token;
+}
+
+
 fn main() {
     use Expr::*;
     let swap = Rules {
