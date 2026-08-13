@@ -139,8 +139,16 @@ struct Token {
     text : String,
 }
 
-struct Lexer {
+struct Lexer<Chars : Iterator<Item=char>> {
+    chars : Chars
 }
+
+impl<Chars : Iterator<Item=char>> Lexer<Chars>{
+    fn from_iter(chars: Cahrs) -> Self{
+        Self { chars }
+    }
+}
+
 
 impl Iterator for Lexer {
     type Item = Token;
@@ -151,34 +159,7 @@ impl Iterator for Lexer {
 
 
 fn main() {
-    use Expr::*;
-    let swap = Rules {
-        leftex: Func(
-            "swap".to_string(),
-            vec![Func(
-                "pair".to_string(),
-                vec![Symb("a".to_string()), Symb("b".to_string())],
-            )],
-        ),
-        rightex: Func(
-            "pair".to_string(),
-            vec![Symb("b".to_string()), Symb("a".to_string())],
-        ),
-    };
-
-    // Pattern swap(pair(a, b))
-    // Value swap(pair(f(c), g(d)))
-
-    let expr = Func("foo".to_string(),
-                    vec![Func("swap".to_string(),
-                              vec![Func("pair".to_string(),
-                                        vec![Func("f".to_string(), vec![Symb("a".to_string())]),
-                                             Func("g".to_string(), vec![Symb("b".to_string())])])]),
-                         Func("swap".to_string(),
-                              vec![Func("pair".to_string(),
-                                        vec![Func("q".to_string(), vec![Symb("c".to_string())]),
-                                             Func("z".to_string(), vec![Symb("d".to_string())])])])]);
-    println!("Rule => {}", swap);
-    println!("Expr => {}", &expr);
-    println!("Expr' => {}", swap.appliesall(&expr));
+    for token in Lexer::from_sm(" swap(pair(a, b)) = pair(b, a) "){
+        println!("{:?}", token);
+    }
 }
