@@ -125,7 +125,7 @@ fn patm(pattr: &Expr, value: &Expr) -> Option<Bindings> {
     }
 }
 
-
+#[derive(Debug)]
 enum TokenCute {
     Sym,
     OpenParen,
@@ -134,23 +134,24 @@ enum TokenCute {
     Equals,
 }
 
+#[derive(Debug)]
 struct Token {
     kind: TokenCute,
     text : String,
 }
 
 struct Lexer<Chars : Iterator<Item=char>> {
-    chars : Chars
+    chars : peekable<Chars>
 }
 
 impl<Chars : Iterator<Item=char>> Lexer<Chars>{
-    fn from_iter(chars: Cahrs) -> Self{
-        Self { chars }
+    fn from_iter(chars: Chars) -> Self{
+        Self { chars : chars.peekable() }
     }
 }
 
 
-impl Iterator for Lexer {
+impl <Chars : Iterator<Item=char>>Iterator for Lexer<Chars> {
     type Item = Token;
     fn next(&mut self) -> Option<Token>{
         todo!()
@@ -159,7 +160,7 @@ impl Iterator for Lexer {
 
 
 fn main() {
-    for token in Lexer::from_sm(" swap(pair(a, b)) = pair(b, a) "){
+    for token in Lexer::from_iter(" swap(pair(a, b)) = pair(b, a) ".chars()){
         println!("{:?}", token);
     }
 }
